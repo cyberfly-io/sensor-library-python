@@ -1,5 +1,5 @@
 # sensor-library-python
-Unified sensor library for raspberry pi
+Unified sensor library is a wrapper around various type of sensor lib for raspberry pi
 
 ## Example usage 
 
