@@ -1,7 +1,11 @@
 from sensor_lib.main import create_sensor
-import time
-sensor = create_sensor('dht11', {"pin_no":14})
+
+sensor = create_sensor('pir', {"pin_no":4})
+
+def motion():
+   print("motion detected")
+
+
+sensor.pir.when_motion = motion
 while 1:
-    time.sleep(1)
-    data = sensor.read()
-    print(data) # Example output: {'humidity': 67.0, 'temperature': 33.0}
+    pass
