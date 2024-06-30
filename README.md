@@ -9,7 +9,6 @@ for raspberry pi 4
 sudo pip3 install -r requirements.txt
 ```
 
-
 for raspberry pi 5
 
 ```
@@ -17,7 +16,6 @@ for raspberry pi 5
 sudo pip3 install -r requirements.txt --break-system-packages"
 
 ```
-
 
 ### DHT11 Temperature sensor 
 
@@ -35,14 +33,21 @@ print(data) # Example output: {'humidity': 67.0, 'temperature': 33.0}
 ```python
 
 from sensor_lib.main import create_sensor
-
 sensor = create_sensor('pir', {"pin_no":4})
-
 def motion():
    print("motion detected")
-
-
 sensor.pir.when_motion = motion
 while 1:
     pass
+```
+
+### Digital Input
+
+```python
+from sensor_lib.main import create_sensor
+import time
+sensor = create_sensor('din', {"pin_no":17})
+while 1:
+    print(sensor.read())
+    time.sleep(2)
 ```
