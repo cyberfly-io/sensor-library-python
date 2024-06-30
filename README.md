@@ -64,3 +64,16 @@ while 1:
     print(sensor.read())
     time.sleep(2)
 ```
+
+### Digital Output
+
+```python
+from sensor_lib.main import create_sensor
+import time
+sensor = create_sensor('dout', {"pin_no":4})
+
+sensor.device.on()
+
+while 1:
+    pass
+```
