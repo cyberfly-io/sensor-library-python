@@ -1,11 +1,8 @@
 from sensor_lib.main import create_sensor
-
-sensor = create_sensor('pir', {"pin_no":4})
-
-def motion():
-   print("motion detected")
+import time
+sensor = create_sensor('din', {"pin_no":17})
 
 
-sensor.pir.when_motion = motion
 while 1:
-    pass
+    print(sensor.read())
+    time.sleep(2)
