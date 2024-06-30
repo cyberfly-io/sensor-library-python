@@ -19,7 +19,7 @@ sudo pip3 install -r requirements.txt --break-system-packages"
 ```
 
 
-## DHT11 Temperature sensor 
+### DHT11 Temperature sensor 
 
 ```python
 
