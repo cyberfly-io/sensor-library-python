@@ -1,6 +1,6 @@
 from sensor_lib.main import create_sensor
 import time
-sensor = create_sensor('din', {"pin_no":17})
+sensor = create_sensor('hall', {"pin_no":17})
 
 
 while 1:

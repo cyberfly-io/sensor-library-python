@@ -7,4 +7,4 @@ class DIN(base_sensor.BaseSensor):
 
     def read(self):
         did = DigitalInputDevice(self.pin_no)
-        return did.value  
+        return {"input":did.value}
