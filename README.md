@@ -41,6 +41,19 @@ while 1:
     pass
 ```
 
+### BMP280 temperature, pressure, altitude sensor
+
+```python
+from sensor_lib.main import create_sensor
+import time
+sensor = create_sensor('bmp280', {"address":0x76}) # 0x77 is default if address is not provided
+
+
+while 1:
+    print(sensor.read())
+    time.sleep(2)
+```
+
 ### Digital Input
 
 ```python
