@@ -1,6 +1,6 @@
 from sensor_lib.main import create_sensor
 import time
-sensor = create_sensor('hall', {"pin_no":17})
+sensor = create_sensor('bmp280', {"address":0x76})
 
 
 while 1:
