@@ -1,3 +1,4 @@
 Adafruit_DHT
 RaspberryPiVcgencmd
 gpiozero
+adafruit-circuitpython-bmp280
