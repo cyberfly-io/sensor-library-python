@@ -2,3 +2,4 @@ Adafruit_DHT
 RaspberryPiVcgencmd
 gpiozero
 adafruit-circuitpython-bmp280
+adafruit-circuitpython-mpu6050

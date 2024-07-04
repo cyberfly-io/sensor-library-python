@@ -1,6 +1,6 @@
 from sensor_lib.main import create_sensor
 import time
-sensor = create_sensor('bmp280', {"address":0x76})
+sensor = create_sensor('mpu6050', {"address":0x68})
 
 
 while 1:
