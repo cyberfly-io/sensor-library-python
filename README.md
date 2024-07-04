@@ -17,6 +17,12 @@ sudo pip3 install -r requirements.txt --break-system-packages
 
 ```
 
+Enable I2C interface for BMP280/MPU6050 sensors
+
+```
+sudo raspi-config
+```
+
 ### DHT11 Temperature sensor 
 
 ```python
