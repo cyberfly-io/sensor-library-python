@@ -37,8 +37,15 @@ sudo raspi-config
 | `bmp280` | Bosch BMP280 barometric sensor for pressure/temperature/altitude. | Optional `address` (default `0x77`), optional `sea_level_pressure`, optional `i2c_bus`. | `{"temperature": °C, "pressure": hPa, "altitude": m}` |
 | `bme280` | Bosch BME280 combined pressure, temperature, humidity sensor. | Optional `address` (default `0x77`), optional `sea_level_pressure`, optional `i2c_bus`. | `{"temperature": °C, "humidity": %, "pressure": hPa, "dew_point": °C}` |
 | `bh1750` | BH1750 ambient light sensor for lux readings. | Optional `address` (default `0x23`), optional `i2c_bus`. | `{"illuminance": lux}` |
+| `bme680` | Bosch BME680 environmental sensor with gas resistance. | Optional `address` (default `0x77`), optional `sea_level_pressure`, optional `i2c_bus`. | `{"temperature": °C, "humidity": %, "pressure": hPa, "gas": ohms}` |
+| `ccs811` | AMS CCS811 air quality sensor for equivalent CO₂ and TVOC. | Optional `address` (default `0x5A`), optional `temperature_offset`, optional `baseline`, optional `i2c_bus`. | `{"eco2": ppm, "tvoc": ppb, "temperature": °C, "baseline": int}` |
+| `vl53l0x` | ST VL53L0X time-of-flight distance sensor. | Optional `address` (default `0x29`), optional `measurement_timing_budget`, optional `signal_rate_limit`, optional `i2c_bus`. | `{"distance_mm": mm, "distance_cm": cm}` |
+| `ads1115` | Analog-to-digital converter for 4 single-ended inputs. | Optional `address` (default `0x48`), optional `channel`, optional `gain`, optional `data_rate`, optional `i2c_bus`. | `{"channel": index, "raw": value, "voltage": volts, "gain": gain}` |
 | `mpu6050` | 6-axis accelerometer + gyroscope (MPU6050). | Optional `address` (default `0x68`), optional `i2c_bus`. | `{"acceleration": {x,y,z}, "gyro": {x,y,z}, "temperature": °C}` |
 | `hc_sr04` | HC-SR04 ultrasonic distance measurement. | `trigger_pin`, `echo_pin`, optional `max_distance`, optional `threshold_distance`. | `{"distance_m": meters, "is_within_threshold": bool}` |
+| `ds18b20` | Waterproof 1-Wire temperature probe (DS18B20). | Optional `sensor_id`, optional `unit` (`celsius`/`fahrenheit`/`kelvin`). | `{"temperature": value, "unit": unit}` |
+| `sht31d` | Sensirion SHT31-D temperature and humidity sensor. | Optional `address` (default `0x44`), optional `heater`, optional `i2c_bus`. | `{"temperature": °C, "humidity": %, "heater": bool}` |
+| `tcs34725` | TCS34725 RGB color sensor with IR filter. | Optional `address` (default `0x29`), optional `gain`, optional `integration_time`, optional `i2c_bus`. | `{"raw": {"red": int, ...}, "rgb": {"r": int, ...}, "lux": float, "color_temperature": K}` |
 
 
 ### DHT11 temperature & humidity sensor
@@ -198,6 +205,117 @@ while True:
     time.sleep(0.5)
 ```
 
+## Supported display modules
+
+| Key | Purpose | Inputs | Output payload |
+| --- | --- | --- | --- |
+| `lcd1602` | 16x2 HD44780-compatible I2C LCD for messages. | Optional `address` (default `0x27`), optional `columns`, optional `rows`, optional `text`, optional `auto_linebreaks`, optional `i2c_bus`. | `{"text": last_displayed}` |
+| `ht16k33` | HT16K33 4-character alphanumeric/7-segment display. | Optional `address` (default `0x70`), optional `text`, optional `align_right`, optional `i2c_bus`. | `{"text": last_displayed}` |
+
+### BME680 gas, humidity, pressure & temperature sensor
+
+```python
+from sensor_lib.main import create_sensor
+import time
+
+sensor = create_sensor('bme680', {"address": 0x77, "sea_level_pressure": 1013.25})
+
+while True:
+    reading = sensor.read()
+    print(
+        "Temp: {0:.1f}°C  Humidity: {1:.1f}%  Pressure: {2:.1f} hPa  Gas: {3:.0f} Ω".format(
+            reading['temperature'], reading['humidity'], reading['pressure'], reading['gas']
+        )
+    )
+    time.sleep(2)
+```
+
+### CCS811 air quality sensor
+
+```python
+from sensor_lib.main import create_sensor
+import time
+
+sensor = create_sensor('ccs811', {"address": 0x5A, "temperature_offset": -2.0})
+
+while True:
+    reading = sensor.read()
+    print(
+        "eCO₂: {0:.0f} ppm  TVOC: {1:.0f} ppb  Temp: {2:.1f}°C".format(
+            reading['eco2'], reading['tvoc'], reading['temperature']
+        )
+    )
+    time.sleep(1)
+```
+
+### VL53L0X time-of-flight distance sensor
+
+```python
+from sensor_lib.main import create_sensor
+import time
+
+sensor = create_sensor('vl53l0x', {"measurement_timing_budget": 50000})
+
+while True:
+    reading = sensor.read()
+    print(f"Distance: {reading['distance_mm']} mm ({reading['distance_cm']:.1f} cm)")
+    time.sleep(0.2)
+```
+
+### ADS1115 4-channel ADC
+
+```python
+from sensor_lib.main import create_sensor
+import time
+
+sensor = create_sensor('ads1115', {"channel": 0, "gain": 1, "data_rate": 128})
+
+while True:
+    reading = sensor.read()
+    print(
+        "Channel {0}: raw={1} voltage={2:.4f} V (gain={3})".format(
+            reading['channel'], reading['raw'], reading['voltage'], reading['gain']
+        )
+    )
+    time.sleep(0.5)
+```
+
+### LCD1602 I2C character display
+
+```python
+from sensor_lib.main import create_sensor
+import time
+
+lcd = create_sensor('lcd1602', {"text": "Booting..."})
+
+# Update both lines (use "\n" for line breaks)
+lcd.display_text("Hello!\nTemp 24°C")
+time.sleep(2)
+
+# Append without clearing the screen
+lcd.append_text("*")
+
+print(lcd.read())  # {'text': 'Hello!\nTemp 24°C*'}
+
+time.sleep(5)
+lcd.clear()
+```
+
+### HT16K33 7-segment display
+
+```python
+from sensor_lib.main import create_sensor
+import time
+import datetime
+
+display = create_sensor('ht16k33', {"align_right": True})
+
+while True:
+    now = datetime.datetime.now()
+    display.display_text(now.strftime("%H%M"))
+    time.sleep(1)
+```
+
 ### Digital output (DOUT)
 
 ```python
@@ -209,5 +327,57 @@ sensor = create_sensor('dout', {"pin_no": 4, "initial_value": False})
 while True:
     sensor.device.toggle()
     print(sensor.read())
+    time.sleep(1)
+```
+
+### DS18B20 1-Wire temperature sensor
+
+```python
+from sensor_lib.main import create_sensor
+import time
+
+# Optional: specify sensor_id if multiple probes are connected
+sensor = create_sensor('ds18b20', {"unit": "celsius"})
+
+while True:
+    reading = sensor.read()
+    print(f"Temperature: {reading['temperature']:.2f}° {reading['unit'][0].upper()}")
+    time.sleep(2)
+```
+
+### SHT31-D temperature & humidity sensor
+
+```python
+from sensor_lib.main import create_sensor
+import time
+
+sensor = create_sensor('sht31d', {"heater": False})
+
+while True:
+    reading = sensor.read()
+    print(
+        f"Temp: {reading['temperature']:.1f}°C  Humidity: {reading['humidity']:.1f}%  Heater: {reading['heater']}"
+    )
+    time.sleep(2)
+```
+
+### TCS34725 RGB color sensor
+
+```python
+from sensor_lib.main import create_sensor
+import time
+
+sensor = create_sensor('tcs34725', {"gain": "GAIN_4X"})
+
+while True:
+    reading = sensor.read()
+    rgb = reading['rgb']
+    print(
+        "RGB: ({r}, {g}, {b})  Lux: {lux:.1f}  CCT: {cct:.0f}K".format(
+            r=rgb['r'], g=rgb['g'], b=rgb['b'],
+            lux=reading.get('lux', 0.0),
+            cct=reading.get('color_temperature', 0.0)
+        )
+    )
     time.sleep(1)
 ```

@@ -11,6 +11,15 @@ from sensor_lib.sensors import (
     bme280,
     bh1750,
     hc_sr04,
+    ds18b20,
+    bme680,
+    ccs811,
+    vl53l0x,
+    ads1115,
+    lcd1602,
+    ht16k33,
+    sht31d,
+    tcs34725,
 )
 
 SENSOR_DICT = {
@@ -26,5 +35,14 @@ SENSOR_DICT = {
     'bme280': bme280.BME280,
     'bh1750': bh1750.BH1750,
     'hc_sr04': hc_sr04.HCSR04,
+    'ds18b20': ds18b20.DS18B20,
+    'bme680': bme680.BME680,
+    'ccs811': ccs811.CCS811,
+    'vl53l0x': vl53l0x.VL53L0X,
+    'ads1115': ads1115.ADS1115,
+    'lcd1602': lcd1602.LCD1602,
+    'ht16k33': ht16k33.HT16K33,
+    'sht31d': sht31d.SHT31D,
+    'tcs34725': tcs34725.TCS34725,
     # Add more sensors here, e.g., 'bmp180': BMP180,
 }

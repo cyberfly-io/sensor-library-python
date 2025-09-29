@@ -6,3 +6,12 @@ adafruit-circuitpython-mpu6050
 adafruit-circuitpython-bme280
 adafruit-circuitpython-bh1750
 adafruit-blinka
+w1thermsensor
+adafruit-circuitpython-bme680
+adafruit-circuitpython-ccs811
+adafruit-circuitpython-vl53l0x
+adafruit-circuitpython-ads1x15
+adafruit-circuitpython-charlcd
+adafruit-circuitpython-ht16k33
+adafruit-circuitpython-sht31d
+adafruit-circuitpython-tcs34725
