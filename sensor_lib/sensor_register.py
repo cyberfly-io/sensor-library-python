@@ -1,4 +1,17 @@
-from sensor_lib.sensors import dht11, vcgen, pir, din, hall, water, dout, bmp280, mpu6050
+from sensor_lib.sensors import (
+    dht11,
+    vcgen,
+    pir,
+    din,
+    hall,
+    water,
+    dout,
+    bmp280,
+    mpu6050,
+    bme280,
+    bh1750,
+    hc_sr04,
+)
 
 SENSOR_DICT = {
     'dht11':dht11.DHT11,
@@ -9,6 +22,9 @@ SENSOR_DICT = {
     'water': water.WATER,
     'dout': dout.DOUT,
     'bmp280': bmp280.BMP280,
-    'mpu6050': mpu6050.MPU6050
+    'mpu6050': mpu6050.MPU6050,
+    'bme280': bme280.BME280,
+    'bh1750': bh1750.BH1750,
+    'hc_sr04': hc_sr04.HCSR04,
     # Add more sensors here, e.g., 'bmp180': BMP180,
 }

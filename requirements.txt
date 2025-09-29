@@ -3,3 +3,6 @@ RaspberryPiVcgencmd
 gpiozero
 adafruit-circuitpython-bmp280
 adafruit-circuitpython-mpu6050
+adafruit-circuitpython-bme280
+adafruit-circuitpython-bh1750
+adafruit-blinka

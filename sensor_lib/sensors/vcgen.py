@@ -1,10 +1,19 @@
-from RaspberryPiVcgencmd import Vcgencmd
-from sensor_lib.sensors import base_sensor
-class VCGEN(base_sensor.BaseSensor):
+from __future__ import annotations
+
+from typing import Any, Dict
+
+from sensor_lib.sensors.base_sensor import BaseSensor
+
+
+class VCGEN(BaseSensor):
     def __init__(self, inputs):
-        super().__init__('vcgen', inputs={})
+        self.vcgencmd = None
+        super().__init__('vcgen', inputs or {})
+
+    def _setup(self) -> None:
+        Vcgencmd = self.import_driver('RaspberryPiVcgencmd', error_hint='pip install RaspberryPiVcgencmd')
+        self.vcgencmd = Vcgencmd.Vcgencmd()
 
     def read(self):
-        cpu_temp = Vcgencmd().get_cpu_temp()
-        results = {"cpu_temperature":cpu_temp}
-        return results
+        cpu_temp = self.vcgencmd.get_cpu_temp()
+        return {"cpu_temperature": cpu_temp}

@@ -1,10 +1,15 @@
-from gpiozero import DigitalInputDevice
-from sensor_lib.sensors import base_sensor
-class HALL(base_sensor.BaseSensor):
-    def __init__(self, inputs):
+from __future__ import annotations
+
+from typing import Any, Dict
+
+from sensor_lib.sensors.gpio_common import DigitalInputSensor
+
+
+class HALL(DigitalInputSensor):
+    pull_up = True
+
+    def __init__(self, inputs: Dict[str, Any]):
         super().__init__('hall', inputs)
-        self.pin_no = inputs.get('pin_no')
 
     def read(self):
-        hall = DigitalInputDevice(self.pin_no, pull_up=True)
-        return {"magnet": hall.value==0 } 
+        return {"magnet": bool(self.device.value == 0)}

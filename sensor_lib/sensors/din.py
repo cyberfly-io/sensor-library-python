@@ -1,10 +1,13 @@
-from gpiozero import DigitalInputDevice
-from sensor_lib.sensors import base_sensor
-class DIN(base_sensor.BaseSensor):
-    def __init__(self, inputs):
+from __future__ import annotations
+
+from typing import Any, Dict
+
+from sensor_lib.sensors.gpio_common import DigitalInputSensor
+
+
+class DIN(DigitalInputSensor):
+    def __init__(self, inputs: Dict[str, Any]):
         super().__init__('din', inputs)
-        self.pin_no = inputs.get('pin_no')
 
     def read(self):
-        did = DigitalInputDevice(self.pin_no)
-        return {"input":did.value}
+        return {"input": int(self.device.value)}

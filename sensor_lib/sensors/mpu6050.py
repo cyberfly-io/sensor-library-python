@@ -1,18 +1,26 @@
-import board
-import adafruit_mpu6050
+from __future__ import annotations
+
+from typing import Any, Dict
+
+from sensor_lib.sensors.i2c_sensor import I2CSensor
 
 
-from sensor_lib.sensors import base_sensor
+class MPU6050(I2CSensor):
+    DEFAULT_ADDRESS = 0x68
 
-class MPU6050(base_sensor.BaseSensor):
-    def __init__(self, inputs):
+    def __init__(self, inputs: Dict[str, Any]):
+        self.mpu = None
         super().__init__('mpu6050', inputs)
-        self.i2c = board.I2C()
-        self.mpu = adafruit_mpu6050.MPU6050(self.i2c, address=inputs.get('address', 0x68))
 
-
+    def _initialize_device(self) -> None:
+        adafruit_mpu6050 = self.import_driver('adafruit_mpu6050', error_hint='pip install adafruit-circuitpython-mpu6050')
+        self.mpu = adafruit_mpu6050.MPU6050(self.i2c, address=self.address or self.DEFAULT_ADDRESS)
 
     def read(self):
-        results = {"accelero":{"x":self.mpu.acceleration[0], "y":self.mpu.acceleration[1], "z":self.mpu.acceleration[2]}, 
-                   "gyro":{"x":self.mpu.gyro[0], "y":self.mpu.gyro[1], "z":self.mpu.gyro[2]}, "temperature":self.mpu.temperature}
-        return results
+        acceleration = self.mpu.acceleration
+        gyro = self.mpu.gyro
+        return {
+            "acceleration": {"x": acceleration[0], "y": acceleration[1], "z": acceleration[2]},
+            "gyro": {"x": gyro[0], "y": gyro[1], "z": gyro[2]},
+            "temperature": float(self.mpu.temperature),
+        }
