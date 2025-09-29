@@ -341,9 +341,9 @@ class SensorTestCase(unittest.TestCase):
         analog_module.AnalogIn = FakeAnalogIn
         add_module('adafruit_ads1x15.analog_in', analog_module)
 
-        sht_module = types.ModuleType('adafruit_sht31d')
-        sht_module.SHT31D = FakeSHT31D
-        add_module('adafruit_sht31d', sht_module)
+    sht_module = types.ModuleType('adafruit_sht31d')
+    sht_module.SHT31D = FakeSHT31D
+    add_module('adafruit_sht31d', sht_module)
 
         charlcd_pkg = types.ModuleType('adafruit_character_lcd')
         charlcd_i2c = types.ModuleType('adafruit_character_lcd.character_lcd_i2c')
@@ -359,16 +359,16 @@ class SensorTestCase(unittest.TestCase):
         add_module('adafruit_ht16k33', ht16k33_pkg)
         add_module('adafruit_ht16k33.segments', ht16k33_segments)
 
-        tcs_module = types.ModuleType('adafruit_tcs34725')
-        tcs_module.TCS34725 = FakeTCS34725
-        tcs_module.GAIN_1X = FakeTCS34725.GAIN_1X
-        tcs_module.GAIN_4X = FakeTCS34725.GAIN_4X
-        tcs_module.GAIN_16X = FakeTCS34725.GAIN_16X
-        tcs_module.GAIN_60X = FakeTCS34725.GAIN_60X
-        tcs_module.INTEGRATIONTIME_2_4MS = FakeTCS34725.INTEGRATIONTIME_2_4MS
-        tcs_module.INTEGRATIONTIME_24MS = FakeTCS34725.INTEGRATIONTIME_24MS
-        tcs_module.INTEGRATIONTIME_50MS = FakeTCS34725.INTEGRATIONTIME_50MS
-        add_module('adafruit_tcs34725', tcs_module)
+    tcs_module = types.ModuleType('adafruit_tcs34725')
+    tcs_module.TCS34725 = FakeTCS34725
+    tcs_module.GAIN_1X = FakeTCS34725.GAIN_1X
+    tcs_module.GAIN_4X = FakeTCS34725.GAIN_4X
+    tcs_module.GAIN_16X = FakeTCS34725.GAIN_16X
+    tcs_module.GAIN_60X = FakeTCS34725.GAIN_60X
+    tcs_module.INTEGRATIONTIME_2_4MS = FakeTCS34725.INTEGRATIONTIME_2_4MS
+    tcs_module.INTEGRATIONTIME_24MS = FakeTCS34725.INTEGRATIONTIME_24MS
+    tcs_module.INTEGRATIONTIME_50MS = FakeTCS34725.INTEGRATIONTIME_50MS
+    add_module('adafruit_tcs34725', tcs_module)
 
         vl53_module = types.ModuleType('adafruit_vl53l0x')
         vl53_module.VL53L0X = FakeVL53L0X
